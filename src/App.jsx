@@ -7,15 +7,15 @@ const App=()=> {
 
   return (
     <div>
-      {/* <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout/>} >
             <Route index element={<Login/>}/>
             <Route  path="/feed" element={<Feed/>}/>
+            <Route  path="/post" element={<Profile />}/>
           </Route>
         </Routes>
-      </BrowserRouter> */}
-      <Profile/>
+      </BrowserRouter>
     </div>
   )
 }
