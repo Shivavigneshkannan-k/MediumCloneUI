@@ -1,0 +1,1 @@
+export const SKY_IMAGE = "https://images.pexels.com/photos/672451/pexels-photo-672451.jpeg?auto=compress&cs=tinysrgb&w=600"
