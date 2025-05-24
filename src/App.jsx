@@ -3,10 +3,13 @@ import Layout from "./Components/Layout"
 import Feed from "./Components/Feed"
 import Login from "./Components/Login"
 import Profile from "./Components/Profile"
+import { Provider } from "react-redux"
+import appStore from "./store/appStore"
 const App=()=> {
 
   return (
     <div>
+      <Provider store={appStore}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout/>} >
@@ -16,6 +19,7 @@ const App=()=> {
           </Route>
         </Routes>
       </BrowserRouter>
+      </Provider>
     </div>
   )
 }
