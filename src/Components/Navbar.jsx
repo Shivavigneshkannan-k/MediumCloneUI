@@ -1,7 +1,26 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { API } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeFeed } from "../store/feedSlice";
+import { removeUser } from "../store/user";
 
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const handleLogout = async ()=>{
+    try{
+      await axios.post(API+'/logout',{},{withCredentials:true});
+      dispatch(removeFeed());
+      dispatch(removeUser());
+      navigate('/');
+
+    }
+    catch(err){
+      console.log("error in logout")
+    }
+  }
   return (
     <nav className='bg-white dark:bg-gray-900   w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600'>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
@@ -20,7 +39,8 @@ const Navbar = () => {
         <div className='flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse'>
           <button
             type='button'
-            className='btn btn-info'>
+            className='btn btn-info'
+            onClick={handleLogout}>
             Logout
           </button>
           <button

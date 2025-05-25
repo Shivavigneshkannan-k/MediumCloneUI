@@ -1,11 +1,21 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { API, initialState, reducer, SKY_IMAGE } from "../utils/constants";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/user";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [form, dipatch] = useReducer(reducer, initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const user = useSelector(store => store.user);
+  
+  useEffect(()=>{
+    if(user){
+      navigate('/feed');
+    }
+  },[navigate,dipatch,user])
 
   const handleSubmit = async () => {
     try{
@@ -24,11 +34,13 @@ const Login = () => {
         },{withCredentials: true})
       }
       dispatch(addUser(data.data.data));
+      navigate('/feed')
     }
     catch(err){
+      console.log(err);
       dipatch({
           type: "UPDATE_FIELD",
-          value: err.message,
+          value: err.response.data.message,
           field: "error"
         })
     }

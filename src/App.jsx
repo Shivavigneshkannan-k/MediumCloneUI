@@ -14,8 +14,8 @@ const App=()=> {
         <Routes>
           <Route path="/" element={<Layout/>} >
             <Route index element={<Login/>}/>
-            <Route  path="/feed" element={<Feed/>}/>
-            <Route  path="/post" element={<Profile />}/>
+            <Route  path="feed" element={<Feed/>}/>
+            <Route  path="post" element={<Profile />}/>
           </Route>
         </Routes>
       </BrowserRouter>
