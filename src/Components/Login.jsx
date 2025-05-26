@@ -40,7 +40,7 @@ const Login = () => {
       console.log(err);
       dipatch({
           type: "UPDATE_FIELD",
-          value: err.response.data.message,
+          value:  err?.response?.data?.message || err?.message,
           field: "error"
         })
     }

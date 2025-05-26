@@ -9,9 +9,10 @@ const feed = createSlice({
         },
         removeFeed:()=>{
             return null;
-        }
+        },
+        removeFeedPost: (state,action)=> state.filter(ele => ele.post_id!=action.payload)
     }
 })
 
-export const {addFeed,removeFeed} = feed.actions;
+export const {addFeed,removeFeed,removeFeedPost} = feed.actions;
 export default feed.reducer; 

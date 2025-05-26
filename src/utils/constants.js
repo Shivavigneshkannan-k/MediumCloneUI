@@ -2,6 +2,7 @@ export const SKY_IMAGE = "https://images.pexels.com/photos/672451/pexels-photo-6
 
 export const initialState = {emailId:'',password:'',userName:'',error:''};
 export const reducer = (state,action)=>{
+    console.log(action.value)
     switch(action.type){
         case "UPDATE_FIELD":
             return {

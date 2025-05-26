@@ -18,12 +18,11 @@ const Feed = () => {
             {
               mpp[rec.post_id]=rec.reaction;
               return mpp;
-
             },
           {});
           
-          dispatch(addFeed(data.data.data));
           dispatch(addReactions(reactionMap));
+          dispatch(addFeed(data.data.data));
       } catch (error) {
         console.log(error);
       }
