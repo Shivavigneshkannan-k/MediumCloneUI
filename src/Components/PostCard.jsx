@@ -56,13 +56,13 @@ const PostCard = ({data}) => {
 
   return (
     <div>
-      <div className='card text-black w-96 rounded-xl bg-orange-200'>
+      <div className='card text-black flex flex-grow border-b-2 border-slate-100'>
         <div className='card-body'>
-          <div className="flex justify-between">
-            <h2 className='card-title'>{title}</h2>
+          <div className="flex justify-between pb-1 flex-grow">
+            <h2 className='card-title lg:text-4xl text-md'>{title}</h2>
              { user_id === user.user_id &&  <button className="btn btn-neutral w-14 h-8" onClick={deletePost}>Delete</button>}
           </div>
-          <p>
+          <p className="py-1">
             {body}
           </p>
           <div className='card-actions justify-between mt-2'>

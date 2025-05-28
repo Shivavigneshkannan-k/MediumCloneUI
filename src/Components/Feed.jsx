@@ -32,10 +32,9 @@ const Feed = () => {
 
 
   return (
-    <div className='flex justify-center p-4 h-dvh'>
-      <div className='w-[80%]'>
-        <h1 className='text-5xl text-center mb-8'>Our Blog</h1>
-        <div className='flex gap-4 flex-wrap'>
+    <div className='flex flex-grow justify-center py-10'>
+      <div className='lg:w-6/12 md:10/12'>
+        <div className='flex flex-col justify-center gap-2 '>
           {feedData ? (
             feedData.map((data) => (
               <PostCard
@@ -47,7 +46,6 @@ const Feed = () => {
             <h1>No post found</h1>
           )}
         </div>
-        <div></div>
       </div>
     </div>
   );

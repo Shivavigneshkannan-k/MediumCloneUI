@@ -39,10 +39,10 @@ const Sidebar = () => {
 
   return (
     userPost && (
-      <div className=' bg-amber-900 text-white h-dvh pt-10 overflow-y-scroll'>
+      <div className='h-svh lg:w-[30%] overflow-y-scroll fixed z-10'>
         <div>
           <div className="flex flex-col items-center">
-            <h2 className="text-2xl text-center">User post</h2>
+            <h2 className="text-xl text-left font-serif py-4 px-4 w-full bg-white z-20 sticky top-0">User post</h2>
             {userPost && userPost? (
             
               userPost.map((data) => (

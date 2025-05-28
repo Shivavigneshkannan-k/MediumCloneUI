@@ -13,8 +13,8 @@ const App=()=> {
       <Provider store={appStore}>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Login/>}/>
           <Route path="/" element={<Layout/>} >
+          <Route index element={<Login/>}/>
             <Route  path="feed" element={<Feed/>}/>
             <Route  path="post" element={<Post />}/>
             <Route  path="profile" element={<EditProfile />}/>
