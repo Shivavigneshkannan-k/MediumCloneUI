@@ -6,11 +6,14 @@ import { API } from "../utils/constants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/user";
+import { useLocation } from "react-router-dom";
 
 const Layout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const user = useSelector(store => store.user);
+
   useEffect(()=>{
     const isLoggedIn =async ()=>{
       try{
@@ -21,10 +24,10 @@ const Layout = () => {
       }
       catch(error){
         console.log("error ",error.message);
-        navigate("/");
+        navigate("/login",{state:{from:location},replace:true});
       }
     }
-    if(!user || !user.user_id){
+    if(!user){
       isLoggedIn();
     }
   },[user,navigate,dispatch])

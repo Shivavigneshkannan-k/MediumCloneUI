@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { API } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/user";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -13,41 +14,59 @@ const EditProfile = () => {
     interest: "",
     username: "",
     photo_url: ""
-  })
+  });
   useEffect(() => {
     count.current += 1;
     console.log(count);
 
     setDetail((prev) => ({
       ...prev,
-      ["bio"]: user?.about ||"",
-      ["interest"]: user?.interest||"",
+      ["bio"]: user?.about || "",
+      ["interest"]: user?.interest || "",
       ["username"]: user?.username || "",
-      photo_url: user?.photo_url || ""
+      ["photo_url"]: user?.photo_url || ""
     }));
   }, [user]);
   const editProfile = async () => {
     const formData = new FormData();
-    formData.append("userName",detail.username);
-    formData.append("interest",detail.interest);
-    formData.append("bio",detail.bio);
-    if(detail.photo_url instanceof File){
-      formData.append("image",detail.photo_url);
+    formData.append("userName", detail.username);
+    formData.append("interest", detail.interest);
+    formData.append("bio", detail.bio);
+    if (detail.photo_url instanceof File) {
+      formData.append("image", detail.photo_url);
     }
+
     try {
-      console.log(detail);
-      const data = await axios.patch(
-        API + "/edit/profile",
-        formData,
-        { withCredentials: true ,headers:{
+      const data = await axios.patch(API + "/edit/profile", formData, {
+        withCredentials: true,
+        headers: {
           "Content-Type": "multipart/form-data"
-        }}
-      );
-      dispatch(
-        addUser(data.data.data)
-      );
+        }
+      });
+      dispatch(addUser(data.data.data));
+      toast.success("profile updated successfully!!!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce
+      });
     } catch (err) {
-      console.log(err);
+      toast.error(err?.response?.data?.message || err.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce
+      });
     }
   };
   const handleChange = (e) => {
@@ -59,113 +78,76 @@ const EditProfile = () => {
 
   return (
     user && (
-      <div className='flex flex-col items-center '>
-        <h1 className=' text-center text-4xl p-5 '>Edit Profile</h1>
-        <div className='flex w-full justify-center mt-10'>
-          <div className='w-1/2 flex flex-col items-center'>
-            <div className='grid grid-cols-1 h-fit w-1/2 '>
-              <div className=''>
-                <label className='input validator'>
-                  <svg
-                    className='h-[1em] opacity-50'
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'>
-                    <g
-                      strokeLinejoin='round'
-                      strokeLinecap='round'
-                      strokeWidth='2.5'
-                      fill='none'
-                      stroke='currentColor'>
-                      <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'></path>
-                      <circle
-                        cx='12'
-                        cy='7'
-                        r='4'></circle>
-                    </g>
-                  </svg>
-                  <input
-                    type='text'
-                    required
-                    placeholder='Username'
-                    value={detail.username}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    name='username'
-                  />
-                </label>
-              </div>
+      <div className='flex flex-col-reverse lg:flex-row flex-grow  min-h-[100%] font-serif lg:justify-end  '>
+        <ToastContainer className='mt-[5%]' />
+        <div className='mx-auto flex flex-col lg:gap-4 items-center lg:border-r-2 border-slate-200 lg:m-4 lg:p-5 lg:items-start lg:w-full '>
+          <input
+            type='text'
+            required
+            placeholder='Username'
+            value={detail.username}
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            name='username'
+            className='focus:outline-0 bg-slate-100 px-6 py-3 lg:w-2/5 w-[80%] ml-'
+          />
 
-              <fieldset className='fieldset'>
-                <legend className='fieldset-legend '>Interest</legend>
-                <select
-                  className='select'
-                  value={detail.interest}
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
-                  name='interest'>
-                  <option value={""}>Pick a interest</option>
-                  <option value={"web development"}>web development</option>
-                  <option value={"social"}>Social</option>
-                  <option value={"nature"}>Nature</option>
-                  <option value={"technology"}>Technology</option>
-                </select>
-                <span className='label'>Optional</span>
-              </fieldset>
-              <div>
-                <fieldset className='fieldset'>
-                  <legend className='fieldset-legend'>Your bio</legend>
-                  <textarea
-                    className='textarea h-24'
-                    placeholder='Bio'
-                    value={detail.bio}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    name='bio'></textarea>
-                  <div className='label'>Optional</div>
-                  <input
-                    type='file'
-                    className='file-input'
-                    accept='image/*'
-                    onChange={(e) => {
-                      setDetail((prev) => ({
-                        ...prev,
-                        photo_url: e.target.files[0]
-                      }));
-                    }}
-                  />
-                </fieldset>
-                <button
-                  className='btn btn-info  items-center mt-4'
-                  onClick={editProfile}>
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className='text-lg flex flex-col  w-1/2 gap-2 '>
-            <img
-              src={user?.photo_url}
-              alt='user profile'
-              className=' w-1/2'
+          <fieldset className='fieldset w-[80%] lg:w-full'>
+            <legend className='text-lg py-2'>Interest</legend>
+            <select
+              className='lg:w-2/5 w-full px-6 py-3 border-0 focus:outline-0 bg-slate-100 text-md'
+              value={detail.interest}
+              onChange={(e) => {
+                handleChange(e);
+              }}
+              name='interest'>
+              <option value={""}>Pick a interest</option>
+              <option value={"web development"}>web development</option>
+              <option value={"social"}>Social</option>
+              <option value={"nature"}>Nature</option>
+              <option value={"technology"}>Technology</option>
+            </select>
+            <span className='label'>Optional</span>
+          </fieldset>
+          <fieldset className='fieldset w-[80%] lg:w-full'>
+            <legend className='text-lg py-2'>Short bio</legend>
+            <textarea
+              className='lg:w-2/5 w-full px-6 py-3 border-0 focus:outline-0 bg-slate-100 lg:h-40 text-lg lg:py-2'
+              placeholder='Bio'
+              value={detail.bio}
+              onChange={(e) => {
+                handleChange(e);
+              }}
+              name='bio'></textarea>
+            <div className='label'>Optional</div>
+          </fieldset>
+          <div className='lg:w-2/5 md:w-1/2 w-[80%]'>
+            <input
+              type='file'
+              className='file-input w-full'
+              accept='image/*'
+              onChange={(e) => {
+                setDetail((prev) => ({
+                  ...prev,
+                  photo_url: e.target.files[0]
+                }));
+              }}
             />
-            <p>
-              <span className='font-bold'>Name:</span> {user.username}
-            </p>
-            <p>
-              <span className='font-bold'>Interest:</span> {user.interest}
-            </p>
-            <p>
-              <span className='font-bold'>Bio: </span>
-              {user.about}
-            </p>
-            <p>
-              <span className='font-bold'>Email Id: </span>
-              {user.email_id}
-            </p>
           </div>
+          <button
+            className='btn btn-info items-center mt-4'
+            onClick={editProfile}>
+            Save
+          </button>
+        </div>
+        <div className='flex flex-grow flex-col gap-2 w-full lg:max-w-2/6 items-center justify-start lg:mt-[10%] h-full'>
+          <img
+            src={user?.photo_url}
+            alt='user profile'
+            className=' w-28 h-28 object-cover rounded-full '
+          />
+          <p className=' text-2xl py-2'>@ {user.username}</p>
         </div>
       </div>
     )

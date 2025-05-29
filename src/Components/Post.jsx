@@ -1,13 +1,14 @@
+import { useState } from "react";
 import CreatePost from "./CreatePost";
 import Sidebar from "./Sidebar";
 
 const Post = () => {
-
+  const [isOpen,setIsOpen] = useState(false);
 
   return (
-    <div className='flex flex-grow m-5 '>
-        <Sidebar />
-        <CreatePost/>
+    <div className='flex flex-grow m-5 relative'>
+        <Sidebar isOpen = {isOpen} setIsOpen={setIsOpen}/>
+        <CreatePost isOpen={isOpen} setIsOpen={setIsOpen}/>
     </div>
   );
 };

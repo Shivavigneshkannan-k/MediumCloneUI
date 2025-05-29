@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { API } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { updateUserPost } from "../store/userPost";
+import { faCloud } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
-const CreatePost = () => {
+const CreatePost = ({ isOpen, setIsOpen }) => {
   const [newPost, setNewPost] = useState({ title: "", body: "", error: "" });
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -17,10 +20,7 @@ const CreatePost = () => {
     try {
       setNewPost({ title: "", body: "", error: "" });
       if (!newPost.title || !newPost.body) {
-        setNewPost((prev) => ({
-          ...prev,
-          ["error"]: "fields can't be empty"
-        }));
+        throw new Error("fields can't be empty")
       } else {
         const post = await axios.post(API + "/post/create", newPost, {
           withCredentials: true
@@ -28,20 +28,46 @@ const CreatePost = () => {
         dispatch(updateUserPost(post.data.data));
       }
     } catch (err) {
-      console.log(err.message);
+      toast.error(err.message, {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce
+      });
     }
   };
 
   return (
-    <div className='w-[70%] fixed right-0 font-serif '>
-      <div className='flex justify-end absolute lg:right-4 lg:top-4'>
-          <button
-            className='btn text-white bg-green-600'
-            onClick={() => createNewPost()}>
-              Publish
-          </button>
-        </div>
-      <div className='flex flex-col m-6 p-4 gap-4 flex-grow'>
+    <div
+      className={`w-full lg:fixed lg:right-0 font-serif flex flex-col items-center relative transition-all duration-1000 ease ${
+        isOpen == false ? "lg:w-full" : "lg:w-[70%]"
+      }`}>
+      {!isOpen && (
+        <button
+          className='btn absolute left-0 lg:p-6 p-4 shadow-md lg:pl-4 lg:rounded-r-2xl  transition duration-400 ease'
+          onClick={() => {
+            setIsOpen((prev) => !prev);
+          }}>
+          <FontAwesomeIcon
+            icon={faCloud}
+            size='xl'
+            className=''
+          />
+        </button>
+      )}
+      <div className='flex lg:absolute lg:right-4 lg:top-2 lg:mr-10'>
+        <button
+          className='btn text-white bg-green-600'
+          onClick={() => createNewPost()}>
+          Publish
+        </button>
+      </div>
+      <div className='flex flex-col m-6 p-4 gap-4 flex-grow w-full lg:w-8/12'>
         <input
           type='text'
           value={newPost.title}
@@ -61,9 +87,23 @@ const CreatePost = () => {
           }}
           value={newPost.body}
           className='min-h-72 focus:outline-0 px-4 py-2 text-xl text-black'></textarea>
-        
       </div>
-        <p className='text-red-600 text-center text-xl'>{newPost.error}</p>
+      <h2 className='lg:text-2xl text-xl text-center'>Writing on Medium</h2>
+      <ToastContainer
+        position='top-left'
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='light'
+         className="mt-[5%]"
+        transition={Bounce}
+      />
+      
     </div>
   );
 };

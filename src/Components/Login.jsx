@@ -3,19 +3,22 @@ import { API, initialState, reducer, SKY_IMAGE } from "../utils/constants";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/user";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const Login = () => {
   const [form, dipatch] = useReducer(reducer, initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((store) => store.user);
+  const location = useLocation();
 
   useEffect(() => {
     if (user) {
-      navigate("/feed");
+      const from = location?.state?.from?.pathname || "/feed";
+      navigate(from, { replace: true });
     }
-  }, [navigate, dipatch, user]);
+  }, [user, location, navigate]);
 
   const handleSubmit = async () => {
     try {
@@ -43,11 +46,16 @@ const Login = () => {
       dispatch(addUser(data.data.data));
       navigate("/feed");
     } catch (err) {
-      console.log(err);
-      dipatch({
-        type: "UPDATE_FIELD",
-        value: err?.response?.data?.message || err?.message,
-        field: "error"
+      toast.error(err?.response?.data?.message || err?.message, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce
       });
     }
   };
@@ -91,7 +99,7 @@ const Login = () => {
             onChange={(e) => handleChange(e)}
             className='lg:w-3/4 px-4 py-2 rounded-lg focus:outline-blue-400 focus:outline-2 outline-1 outline-gray-400'></input>
         </div>
-        <div className="mx-6 flex flex-col justify-center flex-grow">
+        <div className='mx-6 flex flex-col justify-center flex-grow'>
           <button
             className='w-3/4 bg-blue-400 px-4 py-2 rounded-lg
               text-white hover:shadow-sm hover:bg-blue-500 
@@ -101,11 +109,7 @@ const Login = () => {
             }}>
             {isLogin ? "LOGIN" : "SIGN UP"}
           </button>
-          {form.error && (
-            <p className='text-red-600 opacity-80 line-clamp-1'>
-              Error: {form.error}
-            </p>
-          )}
+          <ToastContainer className="mt-[5%]"/>
           <div className='m-auto text-center '>
             <span className='pr-2 text-center'>
               {isLogin ? "Don't have an account?" : "Have an account"}
