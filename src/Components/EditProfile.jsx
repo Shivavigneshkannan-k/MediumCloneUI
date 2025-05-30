@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { API } from "../utils/constants";
+import { API, TOAST_CONFIG } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/user";
 import { Bounce, toast, ToastContainer } from "react-toastify";
@@ -44,29 +44,9 @@ const EditProfile = () => {
         }
       });
       dispatch(addUser(data.data.data));
-      toast.success("profile updated successfully!!!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.success("profile updated successfully!!!", TOAST_CONFIG);
     } catch (err) {
-      toast.error(err?.response?.data?.message || err.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: 0,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(err?.response?.data?.message || err.message, TOAST_CONFIG);
     }
   };
   const handleChange = (e) => {

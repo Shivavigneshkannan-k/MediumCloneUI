@@ -8,11 +8,12 @@ import { removeFeedPost } from "../store/feedSlice";
 import Comments from "./Comments";
 
 const PostCard = ({ data }) => {
+  
   const reactionMap = useSelector((store) => store.user.reactions);
   const user = useSelector((store) => store.user);
   const { title, body, post_id, user_id } = data;
-  const [likes, setLikes] = useState(parseInt(data.likes));
-  const [dislikes, setDislikes] = useState(parseInt(data.dislikes));
+  const [likes, setLikes] = useState(parseInt(data.likes||0));
+  const [dislikes, setDislikes] = useState(parseInt(data.dislikes||0));
   const dispatch = useDispatch();
   const [showComments, setShowComments] = useState(false);
 

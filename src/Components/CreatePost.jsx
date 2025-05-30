@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { API } from "../utils/constants";
+import { API, TOAST_CONFIG } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { updateUserPost } from "../store/userPost";
 import { faCloud } from "@fortawesome/free-solid-svg-icons";
@@ -27,18 +27,9 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
         });
         dispatch(updateUserPost(post.data.data));
       }
+      toast.success("post is successfully published",TOAST_CONFIG);
     } catch (err) {
-      toast.error(err.message, {
-        position: "top-left",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce
-      });
+      toast.error(err.message, TOAST_CONFIG);
     }
   };
 
@@ -89,20 +80,7 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
           className='min-h-72 focus:outline-0 px-4 py-2 text-xl text-black'></textarea>
       </div>
       <h2 className='lg:text-2xl text-xl text-center'>Writing on Medium</h2>
-      <ToastContainer
-        position='top-left'
-        autoClose={5000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='light'
-         className="mt-[5%]"
-        transition={Bounce}
-      />
+      <ToastContainer className="mt-[5%]"/>
       
     </div>
   );
