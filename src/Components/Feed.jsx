@@ -39,7 +39,7 @@ const Feed = () => {
       }
     };
     fetchFeed();
-  }, [dispatch,feedData]);
+  }, [dispatch]);
 
 
   return (

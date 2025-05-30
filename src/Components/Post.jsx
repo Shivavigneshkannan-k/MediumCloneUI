@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CreatePost from "./CreatePost";
 import Sidebar from "./Sidebar";
+import Comments from "./Comments";
 
 const Post = () => {
   const [isOpen,setIsOpen] = useState(false);

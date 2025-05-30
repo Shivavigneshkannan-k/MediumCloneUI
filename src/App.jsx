@@ -4,9 +4,7 @@ import Feed from "./Components/Feed";
 import Login from "./Components/Login";
 import Post from "./Components/Post";
 import EditProfile from "./Components/EditProfile";
-import { useSelector } from "react-redux";
 const App = () => {
-const user = useSelector(store=>store.user);
   return (
     <BrowserRouter>
       <Routes>
