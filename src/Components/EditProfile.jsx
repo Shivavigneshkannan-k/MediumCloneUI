@@ -121,14 +121,6 @@ const EditProfile = () => {
             Save
           </button>
         </div>
-        <div className='flex flex-grow flex-col gap-2 w-full lg:max-w-2/6 items-center justify-start lg:mt-[10%] h-full'>
-          <img
-            src={user?.photo_url}
-            alt='user profile'
-            className=' w-28 h-28 object-cover rounded-full '
-          />
-          <p className=' text-2xl py-2'>@ {user.username}</p>
-        </div>
       </div>
     )
   );

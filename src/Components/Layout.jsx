@@ -17,7 +17,7 @@ const Layout = () => {
   useEffect(()=>{
     const isLoggedIn =async ()=>{
       try{
-        const data = await axios.get(API+"/view/profile",{
+        const data = await axios.get(API+"/view/me",{
           withCredentials: true
         })
         dispatch(addUser(data.data.data));

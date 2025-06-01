@@ -57,7 +57,7 @@ const Navbar = () => {
               tabIndex={0}
               className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
               <li>
-                <Link to='/profile'>profile</Link>
+                <Link to={`profile/${user?.user_id}`}>profile</Link>
               </li>
               <li
                 className='pl-4 hover:bg-gray-200 px-2 py-1'

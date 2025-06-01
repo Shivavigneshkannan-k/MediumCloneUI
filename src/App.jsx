@@ -3,7 +3,7 @@ import Layout from "./Components/Layout";
 import Feed from "./Components/Feed";
 import Login from "./Components/Login";
 import Post from "./Components/Post";
-import EditProfile from "./Components/EditProfile";
+import ProfilePage from "./Components/ProfilePage";
 const App = () => {
   return (
     <BrowserRouter>
@@ -16,7 +16,7 @@ const App = () => {
             <Route index element={<Feed/>}/>
             <Route path='/feed' element={<Feed/>}/>
             <Route path='/post' element={<Post/>}/>
-            <Route path='/profile' element={<EditProfile/>}/>
+            <Route path='/profile/:userId' element={<ProfilePage/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

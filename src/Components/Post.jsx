@@ -8,7 +8,7 @@ const Post = () => {
 
   return (
     <div className='flex flex-grow m-5 relative'>
-        <Sidebar isOpen = {isOpen} setIsOpen={setIsOpen}/>
+        {/* <Sidebar isOpen = {isOpen} setIsOpen={setIsOpen}/> */}
         <CreatePost isOpen={isOpen} setIsOpen={setIsOpen}/>
     </div>
   );

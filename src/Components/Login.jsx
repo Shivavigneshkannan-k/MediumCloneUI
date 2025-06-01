@@ -98,6 +98,7 @@ const Login = () => {
             value={form.password}
             onChange={(e) => handleChange(e)}
             className='lg:w-3/4 px-4 py-2 rounded-lg focus:outline-blue-400 focus:outline-2 outline-1 outline-gray-400'></input>
+            
         </div>
         <div className='mx-6 flex flex-col justify-center flex-grow'>
           <button

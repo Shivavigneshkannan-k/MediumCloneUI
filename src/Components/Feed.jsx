@@ -3,8 +3,7 @@ import PostCard from "./PostCard";
 import axios from "axios";
 import { API } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeed} from "../store/feedSlice";
-import { addReactions } from "../store/user";
+import { addFeed, updateReaction} from "../store/feedSlice";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const Feed = () => {
@@ -13,17 +12,8 @@ const Feed = () => {
   useEffect(() => {
     const fetchFeed = async () => {
       try {
-          const data = await axios.get(API+"/view/reactions",{withCredentials:true});
-          const userReaction = await axios.get(API+'/view/user/reaction',{withCredentials:true});
-          const reactionMap = await userReaction?.data?.data.reduce((mpp,rec)=> 
-            {
-              mpp[rec.post_id]=rec.reaction;
-              return mpp;
-            },
-          {});
-          
-          dispatch(addReactions(reactionMap));
-          dispatch(addFeed(data.data.data));
+          const feed = await axios.get(API+'/view/all',{withCredentials:true});
+          dispatch(addFeed(feed.data.data));
       } catch (err) {
         toast.error(err?.response?.data?.message||err.message, {
         position: "top-right",
@@ -40,8 +30,6 @@ const Feed = () => {
     };
     fetchFeed();
   }, [dispatch]);
-
-
   return (
     <div className='flex flex-grow justify-center py-10'>
       <ToastContainer className="mt-[5%]"/>
@@ -52,11 +40,14 @@ const Feed = () => {
               <PostCard
                 key={data.post_id}
                 data = {data}
+                actionFunc={updateReaction}
                 />
             ))
           ) : (
             <h1>No post found</h1>
           )}
+          {/* single post test */}
+          {/* {feedData && <PostCard data = {feedData[0]}/>} */}
         </div>
       </div>
     </div>
