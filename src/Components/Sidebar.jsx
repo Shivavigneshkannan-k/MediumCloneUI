@@ -1,21 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
 import PostCard from "./PostCard";
-import axios from "axios";
-import { useEffect } from "react";
-import { API } from "../utils/constants";
-import { addUserPost, updateUserPost } from "../store/userPost";
-import { addReactions } from "../store/user";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
+import { updateUserPost } from "../store/userPost";
 const Sidebar = ({posts,user}) => {
   
   return (
     posts && (
       <div className="h-svh overflow-y-scroll">
         <div>
-          <div className="flex flex-col items-center">
-            {posts && posts? (
+          <div className="flex flex-col items-center flex-grow w-full">
+            {posts && posts.length>0? (
               posts.map((data) => (
                 <div className='m-4' key={data.post_id}>
                   <PostCard
@@ -25,7 +17,7 @@ const Sidebar = ({posts,user}) => {
                 </div>
               ))
             ) : (
-              <h1>No post found</h1>
+              <h1 className="text-xl py-5">----- No post found -----</h1>
             )}
           </div>
         </div>

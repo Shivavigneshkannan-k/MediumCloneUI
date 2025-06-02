@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 const useFetchComments = (post_id,setCommentData)=>{
     useEffect(() => {
+      console.log('re-rendering')
     const fetchComments = async () => {
       try {
         const data = await axios.get(`${API}/comment/read/${post_id}`, {

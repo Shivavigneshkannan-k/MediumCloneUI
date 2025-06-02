@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { API } from "../utils/constants";
+import { API, TOAST_CONFIG } from "../utils/constants";
 import axios from "axios";
 import { useState } from "react";
 import { removePost } from "../store/userPost";
-import { removeFeedPost, updateReaction } from "../store/feedSlice";
+import { removeFeedPost } from "../store/feedSlice";
 import Comments from "./Comments";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const PostCard = ( {data,actionFunc} ) => {
   const user = useSelector(store => store.user);
@@ -43,7 +44,7 @@ const PostCard = ( {data,actionFunc} ) => {
         dispatch(actionFunc({post_id:data?.post_id,user_reaction:null}));
       }
     } catch (err) {
-      console.log(err.message);
+     toast.error(err?.response?.data?.message||err.message,TOAST_CONFIG)
     }
   };
 
@@ -54,15 +55,15 @@ const PostCard = ( {data,actionFunc} ) => {
       });
       dispatch(removePost(data?.post_id));
       dispatch(removeFeedPost(data?.post_id));
-      console.log("successfully deleted");
+      toast.success("successfully deleted",TOAST_CONFIG)
     } catch (err) {
-      console.log(err);
+      toast.error(err?.response?.data?.message||err.message,TOAST_CONFIG)
     }
   };
   return (
     <div>
-      <div className='card text-black flex flex-grow border-b-2 border-slate-100'>
-        <div className="flex px-4 py-2 items-center gap-4 font-serif" onClick={()=>{
+      <div className='card text-black flex flex-grow  border-slate-200 shadow-md lg:min-w-2xl'>
+        <div className="flex px-4 py-2 items-center gap-4 font-serif cursor-pointer" onClick={()=>{
           navigate('/profile/'+data.user_id);
         }} >
           <img className="w-10 h-10 rounded-full object-cover" src={data?.photo_url} alt="creator photo"/>

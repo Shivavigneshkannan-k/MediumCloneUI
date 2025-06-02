@@ -4,8 +4,10 @@ import { API, TOAST_CONFIG } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/user";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const EditProfile = () => {
+const EditProfile = ({ setShowEdit }) => {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const count = useRef(0);
@@ -45,6 +47,9 @@ const EditProfile = () => {
       });
       dispatch(addUser(data.data.data));
       toast.success("profile updated successfully!!!", TOAST_CONFIG);
+      setTimeout(() => {
+        setShowEdit(false);
+      }, 3000);
     } catch (err) {
       toast.error(err?.response?.data?.message || err.message, TOAST_CONFIG);
     }
@@ -58,9 +63,19 @@ const EditProfile = () => {
 
   return (
     user && (
-      <div className='flex flex-col-reverse lg:flex-row flex-grow  min-h-[100%] font-serif lg:justify-end  '>
+      <div className='w-full h-dvh flex justify-center bg-slate-300 fixed'>
         <ToastContainer className='mt-[5%]' />
-        <div className='mx-auto flex flex-col lg:gap-4 items-center lg:border-r-2 border-slate-200 lg:m-4 lg:p-5 lg:items-start lg:w-full '>
+        <div className='lg:w-1/3 md:w-1/2 w-[95%] mt-10 shadow-xl p-4 rounded-lg h-fit bg-white'>
+          <div className='w-full flex justify-end m-2'>
+            <FontAwesomeIcon
+              icon={faXmark}
+              size='lg'
+              className='hover:bg-red-500 hover:text-white py-2 px-3  rounded-full'
+              onClick={() => {
+                setShowEdit((prev) => !prev);
+              }}
+            />
+          </div>
           <input
             type='text'
             required
@@ -70,13 +85,13 @@ const EditProfile = () => {
               handleChange(e);
             }}
             name='username'
-            className='focus:outline-0 bg-slate-100 px-6 py-3 lg:w-2/5 w-[80%] ml-'
+            className='focus:outline-0 bg-slate-100 px-6 py-3 w-full'
           />
 
-          <fieldset className='fieldset w-[80%] lg:w-full'>
+          <fieldset className='fieldset w-full'>
             <legend className='text-lg py-2'>Interest</legend>
             <select
-              className='lg:w-2/5 w-full px-6 py-3 border-0 focus:outline-0 bg-slate-100 text-md'
+              className=' w-full px-6 py-3 border-0 focus:outline-0 bg-slate-100 text-md'
               value={detail.interest}
               onChange={(e) => {
                 handleChange(e);
@@ -90,10 +105,10 @@ const EditProfile = () => {
             </select>
             <span className='label'>Optional</span>
           </fieldset>
-          <fieldset className='fieldset w-[80%] lg:w-full'>
+          <fieldset className='fieldset w-full'>
             <legend className='text-lg py-2'>Short bio</legend>
             <textarea
-              className='lg:w-2/5 w-full px-6 py-3 border-0 focus:outline-0 bg-slate-100 lg:h-40 text-lg lg:py-2'
+              className='w-full px-6 py-3 border-0 focus:outline-0 bg-slate-100 lg:h-40 text-lg lg:py-2'
               placeholder='Bio'
               value={detail.bio}
               onChange={(e) => {
@@ -102,7 +117,7 @@ const EditProfile = () => {
               name='bio'></textarea>
             <div className='label'>Optional</div>
           </fieldset>
-          <div className='lg:w-2/5 md:w-1/2 w-[80%]'>
+          <div className='w-full'>
             <input
               type='file'
               className='file-input w-full'

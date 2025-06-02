@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import { API, TOAST_CONFIG } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { updateUserPost } from "../store/userPost";
-import { faCloud } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
-const CreatePost = ({ isOpen, setIsOpen }) => {
+const CreatePost = () => {
   const [newPost, setNewPost] = useState({ title: "", body: "", error: "" });
   const dispatch = useDispatch();
   const handleChange = (e) => {
@@ -29,28 +27,14 @@ const CreatePost = ({ isOpen, setIsOpen }) => {
       }
       toast.success("post is successfully published",TOAST_CONFIG);
     } catch (err) {
+      console.log(err)
       toast.error(err.message, TOAST_CONFIG);
     }
   };
 
   return (
     <div
-      className={`w-full lg:fixed lg:right-0 font-serif flex flex-col items-center relative transition-all duration-1000 ease ${
-        isOpen == false ? "lg:w-full" : "lg:w-[70%]"
-      }`}>
-      {!isOpen && (
-        <button
-          className='btn absolute left-0 lg:p-6 p-4 shadow-md lg:pl-4 lg:rounded-r-2xl  transition duration-400 ease'
-          onClick={() => {
-            setIsOpen((prev) => !prev);
-          }}>
-          <FontAwesomeIcon
-            icon={faCloud}
-            size='xl'
-            className=''
-          />
-        </button>
-      )}
+      className={`w-full lg:fixed lg:right-0 font-serif flex flex-col items-center relative `}>
       <div className='flex lg:absolute lg:right-4 lg:top-2 lg:mr-10'>
         <button
           className='btn text-white bg-green-600'
