@@ -30,7 +30,7 @@ const Comments = ({ post_id }) => {
         `${API}/comment/create`,
         {
           post_id: post_id,
-          commenter_id: user.user_id,
+          commenter_id: user?.user_id,
           comment: newComment
         },
         { withCredentials: true }
@@ -52,7 +52,7 @@ const Comments = ({ post_id }) => {
     <div className='flex flex-col gap-1 m-2 p-2'>
       <ToastContainer className='mt-[5%]' />
       <p className='p-2 font-bold text-lg '>Comments</p>
-      <div className='flex flex-grow justify-between lg:mx-2 items-center'>
+      {user && <div className='flex flex-grow justify-between lg:mx-2 items-center'>
         <input
           type='text'
           value={newComment}
@@ -65,13 +65,13 @@ const Comments = ({ post_id }) => {
           onClick={()=>createNewComment()}>
           post
         </button>
-      </div>
-      {commentData ? (
+      </div>}
+      {commentData && commentData.length ? (
         commentData.map((comment) => (
           <Comment
             key={comment.comment_id}
             comment={comment}
-            user_id ={user.user_id}
+            user ={user}
             handleDeleteComment={handleDeleteComment}
           />
         ))

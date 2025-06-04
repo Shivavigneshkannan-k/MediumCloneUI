@@ -8,11 +8,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* unauthorized routes */}
-        <Route path="/login" element={<Login/>}/>
 
         {/* protected routes */}
         <Route path="/" element={<Layout/>}>
+        {/* unauthorized routes */}
+          <Route path="/login" element={<Login/>}/>
             <Route index element={<Feed/>}/>
             <Route path='/feed' element={<Feed/>}/>
             <Route path='/post' element={<Post/>}/>

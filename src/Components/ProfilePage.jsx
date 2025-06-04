@@ -22,12 +22,16 @@ const ProfilePage = () => {
     const fetchUserData = async () => {
       try {
         const userData = await axios.get(`${API}/view/user/post/${userId}`, {
-          withCredentials: true
+          withCredentials: true,
+          headers:{
+            role:user?.role || 'guest'
+          }
         });
         console.log(userData.data.data);
         dispatch(addUserPost(userData.data.data));
       } catch (err) {
-        console.log(err);
+        toast.error(err?.response?.data?.message || err?.message , TOAST_CONFIG)
+        console.log(err)
       }
     };
     fetchUserData();
@@ -36,8 +40,12 @@ const ProfilePage = () => {
   const fetchUserFollowers = async (type, userId) => {
     try {
       const data = await axios.get(`${API}/follow/${type}/${userId}`, {
-        withCredentials: true
-      });
+        withCredentials: true,
+         headers:{
+            role:user?.role || 'guest'
+          }
+      }
+    );
       setFollowersData(data.data.data);
       console.log(followersData);
     } catch (err) {
@@ -66,7 +74,7 @@ const ProfilePage = () => {
 
           <p className='text-2xl'>@{user?.username}</p>
           <div className='text-lg'>{user?.about}</div>
-          {user?.user_id == currentUser?.user_id && (
+          {user && user?.user_id == currentUser?.user_id && (
             <button
               className='btn bg-black text-white w-22'
               onClick={() => {
@@ -75,7 +83,7 @@ const ProfilePage = () => {
               Edit
             </button>
           )}
-          {user?.user_id != currentUser?.user_id && (
+          {currentUser && user?.user_id != currentUser?.user_id && (
             <button
               className='btn w-24 my-4 rounded-4xl bg-black text-white'
               onClick={() => {

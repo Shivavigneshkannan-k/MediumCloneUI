@@ -29,6 +29,7 @@ const EditProfile = ({ setShowEdit }) => {
       ["photo_url"]: user?.photo_url || ""
     }));
   }, [user]);
+
   const editProfile = async () => {
     const formData = new FormData();
     formData.append("userName", detail.username);
@@ -42,6 +43,7 @@ const EditProfile = ({ setShowEdit }) => {
       const data = await axios.patch(API + "/edit/profile", formData, {
         withCredentials: true,
         headers: {
+          'role':'user',
           "Content-Type": "multipart/form-data"
         }
       });
@@ -49,8 +51,9 @@ const EditProfile = ({ setShowEdit }) => {
       toast.success("profile updated successfully!!!", TOAST_CONFIG);
       setTimeout(() => {
         setShowEdit(false);
-      }, 3000);
+      }, 2000);
     } catch (err) {
+      console.log(err);
       toast.error(err?.response?.data?.message || err.message, TOAST_CONFIG);
     }
   };

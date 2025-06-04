@@ -15,7 +15,7 @@ const Navbar = () => {
       await axios.post(API + "/logout", {}, { withCredentials: true });
       dispatch(removeFeed());
       dispatch(removeUser());
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.log(err, "error in logout");
     }
@@ -28,7 +28,7 @@ const Navbar = () => {
         Medium
       </Link>
       <div className='flex items-center flex-grow lg:max-w-1/4 justify-end gap-4 px-4'>
-        <Link
+        {user && <Link
           to='/post'
           className='space-x-2 mx-2 flex'>
           <FontAwesomeIcon
@@ -37,7 +37,7 @@ const Navbar = () => {
             className='text-slate-400'
           />
           <div className='text-slate-400'>Write</div>
-        </Link>
+        </Link>}
         <div to='/profile'>
           <div className='dropdown dropdown-end'>
             <div
@@ -56,14 +56,25 @@ const Navbar = () => {
             <ul
               tabIndex={0}
               className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'>
-              <li>
+              {user && <li>
                 <Link to={`profile/${user?.user_id}`}>profile</Link>
-              </li>
+              </li>}
+              
               <li
+                className='pl-4 hover:bg-gray-200 px-2 py-1'
+                onClick={()=>{navigate('/feed')}}>
+                feed
+              </li>
+              {!user &&<li
+                className='pl-4 hover:bg-gray-200 px-2 py-1'
+                onClick={()=>{navigate('/login')}}>
+                login
+              </li>}
+              {user && <li
                 className='pl-4 hover:bg-gray-200 px-2 py-1'
                 onClick={handleLogout}>
                 logout
-              </li>
+              </li>}
             </ul>
           </div>
         </div>

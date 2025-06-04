@@ -72,7 +72,7 @@ const PostCard = ( {data,actionFunc} ) => {
         <div className='card-body'>
           <div className='flex justify-between pb-1 flex-grow'>
             <h2 className='card-title lg:text-4xl text-md'>{data?.title}</h2>
-            {data?.user_id === user?.user_id && (
+            {(data?.user_id === user?.user_id || user?.role ==='admin') && (
               <button
                 className='btn btn-neutral w-14 h-8'
                 onClick={deletePost}>
@@ -89,7 +89,7 @@ const PostCard = ( {data,actionFunc} ) => {
               {showComments ? "hide Comments" : "show Comments"}
             </button>
             
-              <button
+              { user && <button
                 className={
                   (data?.user_reaction === "like" ? "btn-success" : "") +
                   " btn w-20 h-8"
@@ -98,8 +98,8 @@ const PostCard = ( {data,actionFunc} ) => {
                   handleReaction("like");
                 }}>
                 {likes} Like{" "}
-              </button>
-              <button
+              </button>}
+              {user && <button
                 className={
                   (data?.user_reaction === "dislike" ? "btn-error" : "") +
                   " btn w-22 h-8"
@@ -108,7 +108,7 @@ const PostCard = ( {data,actionFunc} ) => {
                   handleReaction("dislike");
                 }}>
                 {dislikes} Dislike{" "}
-              </button>
+              </button>}
             </div>
           </div>
 
